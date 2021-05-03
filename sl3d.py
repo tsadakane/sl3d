@@ -5,6 +5,7 @@ Copyright
 =========
 3-clause BSD License
 Copyright 2021 SADAKANE, Tomoyuki
+https://github.com/tsadakane/sl3d
 
 This code is inspired by the following MATLAB codes:
  * Matthias Schabel (2021). 3D Shepp-Logan phantom (https://www.mathworks.com/matlabcentral/fileexchange/9416-3d-shepp-logan-phantom), MATLAB Central File Exchange. Retrieved April 29, 2021.
@@ -29,14 +30,17 @@ def shepp_logan_3d(size_out=128, phantom_type="yu-ye-wang", get_ellipsoids = Fal
         The number of voxels of phantom. [nVoxelZ, nVoxelY, nVoxelX]
 
     get_ellipsoids: bool
-        Default is False
-        Returns the parameters of the ellipsoids if True.
+        Default is False.
+        If False, returns the parameters of the ellipsoids as well as the phantom image.
 
     Returns
     =======
-    (img_phantom, ellipsoids)
-    img_phantom: numpy ndarray
-    ellipsoids: list of parameters that defines ellipsoids
+    If get_ellipsoids is True:
+        (img_phantom, ellipsoids)
+        img_phantom: numpy ndarray
+        ellipsoids: list of parameters that defines ellipsoids
+    else:
+        img_phantom: numpy ndarray
 
     Notes
     =====
