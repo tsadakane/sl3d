@@ -14,7 +14,7 @@ This code is inspired by the following MATLAB codes:
 import numpy as np
 
 #%%
-def shepp_logan_3d(size_out=128, phantom_type="yu-ye-wang"):
+def shepp_logan_3d(size_out=128, phantom_type="yu-ye-wang", get_ellipsoids = False):
     """Three-dimensional Shepp-Logan head phantom
     Variations of three-dimensional Shepp-Logan head phantom.
     Parameters
@@ -27,6 +27,10 @@ def shepp_logan_3d(size_out=128, phantom_type="yu-ye-wang"):
     size_out : int or list whose length is three, optional
         Default is [128, 128, 128]
         The number of voxels of phantom. [nVoxelZ, nVoxelY, nVoxelX]
+
+    get_ellipsoids: bool
+        Default is False
+        Returns the parameters of the ellipsoids if True.
 
     Returns
     =======
@@ -102,7 +106,10 @@ def shepp_logan_3d(size_out=128, phantom_type="yu-ye-wang"):
         img_phantom[idx] += A
 
     img_phantom = img_phantom.reshape(nVoxel)
-    return img_phantom, ellipsoids
+    if get_ellipsoids:
+        return img_phantom, ellipsoids
+    else:
+        return img_phantom
 
 def _parse_inputs(size_out, phantom_type):
     """
@@ -233,9 +240,9 @@ if __name__ == '__main__':
     nVoxelY = 256 #128
     nVoxelX = 256 #64
 
-    phantom0, e = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="kak-slaney")
-    phantom1, e = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="yu-ye-wang")
-    phantom2, e = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="toft-schabel")
+    phantom0, e = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="kak-slaney", get_ellipsoids=True)
+    phantom1    = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="yu-ye-wang")
+    phantom2    = shepp_logan_3d(size_out=[nVoxelZ,nVoxelY,nVoxelX], phantom_type="toft-schabel")
     plt.imshow(np.concatenate(
                 [phantom0[3*phantom0.shape[0]//8],
                  phantom1[3*phantom1.shape[0]//8],
@@ -244,3 +251,4 @@ if __name__ == '__main__':
     plt.colorbar()
     plt.title("KS z=-0.25       YYW z=-0.25        TS z=0.00")
     plt.show()
+    print(f"Ellipsoids of kak-slaney are\n{e}")
